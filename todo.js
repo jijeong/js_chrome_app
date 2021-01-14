@@ -4,7 +4,19 @@ const toDoForm = document.querySelector(".js-toDoForm"),  // 1_toDo 영역 양�
 
 const TODOS_LS = 'toDos'; // 8_문자열 변수 선언
 
-const toDos = []; // to do list가 추가될 때 마다 여기에 배열로 입력됨
+let toDos = []; // to do list가 추가될 때 마다 여기에 배열로 입력됨
+
+
+function deleteToDo(event){
+    const btn = event.target;
+    const li = btn.parentNode;
+    toDoList.removeChild(li);
+    const cleanToDos = toDos.filter(function(toDo) {
+        return toDo.id !== parseInt(li.id);
+    });
+    toDos = cleanToDos;
+    saveToDos();
+}
 
 function saveToDos(){
     localStorage.setItem(TODOS_LS, JSON.stringify (toDos));
@@ -14,8 +26,10 @@ function paintToDo(text){ // 14_Todo 생성 (*매개변수)
    const li = document.createElement("li"); //17_ 문서에 요소만들기 (li)
    const delBtn = document.createElement("button"); // 18_문서에 요소만들기 (button)
     delBtn.innerHTML = "❌"; // 19_button 안에 해당 text 삽입
+    delBtn.addEventListener("click", deleteToDo)
     const span = document.createElement("span"); // 20_문서에 요소만들기 (span)
     const newId = toDos.length + 1;
+
 
     span.innerText = text // 21_span 안에 (*매개변수) 삽입
     li.appendChild(span); //  22_span을 li의 child element로 삽입
